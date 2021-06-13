@@ -11,83 +11,83 @@ namespace BookKeeperBECommon.Services
 
 
 
-    public class UserService
+    public class ContactService
     {
 
 
 
-        private UserRepoMysql userRepo;
+        private ContactRepoMysql userRepo;
 
 
 
         public UserService()
         {
             // Temporary solution.
-            this.userRepo = new UserRepoMysql();
+            this.userRepo = new ContactRepoMysql();
         }
 
 
 
-        public IList<User> GetListOfUsers()
+        public IList<Contact> GetListOfUsers()
         {
-            return this.userRepo.GetList();
+            return this.contactRepo.GetList();
         }
 
 
 
-        public IList<User> FindListOfUsers(string usernamePattern)
+        public IList<Contact> FindListOfUsers(string usernamePattern)
         {
-            User searchCriteriaAsUser = new User { Username = $"*{usernamePattern}*" };
+            User searchCriteriaAsUser = new Contact { Username = $"*{usernamePattern}*" };
             //User searchCriteriaAsUser = new User { Username = usernamePattern };
             return this.userRepo.FindList(searchCriteriaAsUser);
         }
 
 
 
-        public IList<User> SearchUsers(User user)
+        public IList<Contact> SearchUsers(Contact contact)
         {
-            if ((user.ID == 0) && (user.Username == null))
+            if ((contact.ID == 0) && (contact.Username == null))
             {
                 // Empty user-search criteria.
                 return GetListOfUsers();
             }
-            if ((user.ID == 0) && (user.Username != null))
+            if ((contact.ID == 0) && (contact.Username != null))
             {
                 // Only the Username property has been set.
-                return FindListOfUsers(user.Username);
+                return FindListOfUsers(contact.Username);
             }
-            return this.userRepo.FindList(user);
+            return this.userRepo.FindList(contact);
         }
 
 
 
         public bool ExistsUser(int id)
         {
-            User userToCheck = new User { ID = id };
+            Contact userToCheck = new Contact { ID = id };
             bool exists = this.userRepo.Exists(userToCheck);
             return exists;
         }
 
 
 
-        public User LoadUser(int id)
+        public Contact LoadUser(int id)
         {
-            User userToLoad = new User { ID = id };
-            User userLoaded = this.userRepo.Load(userToLoad);
+            Contact userToLoad = new Contact { ID = id };
+            Contact userLoaded = this.contactRepo.Load(userToLoad);
             return userLoaded;
         }
 
 
 
         //public void SaveUser(User user)
-        public User SaveUser(User user)
+        public Contact SaveUser(Contact contact)
         {
-            User userToReturn = user;
-            if (user.ID == 0)
+            User userToReturn = contact;
+            if (contact.ID == 0)
             {
-                this.userRepo.Add(user);
+                this.contactRepo.Add(contact);
                 // Find all users with the given username.
-                List<User> listOfUsersToProcess = (List<User>) this.userRepo.FindList(user);
+                List<Contact> listOfUsersToProcess = (List<Contact>) this.userRepo.FindList(contact);
                 // Sort the list of users by their ID's in an ascending order.
                 listOfUsersToProcess.Sort((u1, u2) => u1.ID - u2.ID);
                 // Get the last user (with the greatest ID).
@@ -96,7 +96,7 @@ namespace BookKeeperBECommon.Services
             }
             else
             {
-                this.userRepo.Store(user);
+                this.contactRepo.Store(contact);
             }
             return userToReturn;
         }
@@ -104,11 +104,11 @@ namespace BookKeeperBECommon.Services
 
 
         //public void DeleteUser(int id)
-        public User DeleteUser(int id)
+        public Contact DeleteUser(int id)
         {
-            User userToDelete = new User { ID = id };
-            User userToDeleteFound = this.userRepo.Load(userToDelete);
-            this.userRepo.Remove(userToDelete);
+            Contact userToDelete = new Contact { ID = id };
+            Contact userToDeleteFound = this.contactRepo.Load(userToDelete);
+            this.contactRepo.Remove(userToDelete);
             return userToDeleteFound;
         }
 

@@ -17,7 +17,7 @@ namespace BookKeeperBECommon.Repos
     /// <summary>
     /// Exposes CRUD methods for the business object User.
     /// </summary>
-    public class UserRepoMysql
+    public class ContactRepoMysql
     {
 
 
@@ -26,7 +26,7 @@ namespace BookKeeperBECommon.Repos
         /// Gets a complete list of all users.
         /// </summary>
         /// <returns>Returns the list of all users.</returns>
-        public IList<User> GetList()
+        public IList<Contact> GetList()
         {
             using (var context = new MysqlContext())
             {
@@ -34,7 +34,7 @@ namespace BookKeeperBECommon.Repos
                 var query = from u in context.Users
                             select u;
                 //var query = context.Users;
-                var users = query.ToList<User>();
+                var users = query.ToList<Contact>();
 
                 return users;
 
@@ -48,7 +48,7 @@ namespace BookKeeperBECommon.Repos
         /// </summary>
         /// <param name="user">Criteria that the found users should match.</param>
         /// <returns>Returns a list of matching users.</returns>
-        public IList<User> FindList(User user)
+        public IList<Contact> FindList(Contact contact)
         {
             using (var context = new MysqlContext())
             {
@@ -57,9 +57,9 @@ namespace BookKeeperBECommon.Repos
                 //            where u.Username == user.Username
                 //            select u;
 
-                IQueryable<User> query = BuildQuery(context.Users, user);
+                IQueryable<Contact> query = BuildQuery(context.Contact, contact);
 
-                var users = query.ToList<User>();
+                var users = query.ToList<Contact>();
                 return users;
 
             }
@@ -72,7 +72,7 @@ namespace BookKeeperBECommon.Repos
         /// </summary>
         /// <param name="user">User to check the repo for.</param>
         /// <returns>Returns true :-: the user exists, false :-: the user does not exist.</returns>
-        public bool Exists(User user)
+        public bool Exists(Contact contact)
         {
             using (var context = new MysqlContext())
             {
@@ -81,9 +81,9 @@ namespace BookKeeperBECommon.Repos
                 //            where u.Username == user.Username
                 //            select u;
 
-                IQueryable<User> query = BuildQuery(context.Users, user);
+                IQueryable<Contact> query = BuildQuery(context.Contact, contact);
 
-                var exists = query.Any<User>();
+                var exists = query.Any<Contact>();
                 return exists;
 
             }
@@ -96,16 +96,16 @@ namespace BookKeeperBECommon.Repos
         /// </summary>
         /// <param name="user">Information identifying the user to be loaded (their ID).</param>
         /// <returns>Returns the requested user. If no such user exists, the method should throw an exception.</returns>
-        public User Load(User user)
+        public User Load(Contact contact)
         {
-            if (!Exists(user))
+            if (!Exists(contact))
             {
-                throw new Exception($"There's no such user with ID: {user.ID}");
+                throw new Exception($"There's no such user with ID: {contact.ID}");
             }
             using (var context = new MysqlContext())
             {
 
-                return context.Users.Find(user.ID);
+                return context.Contact.Find(contact.ID);
 
             }
         }
@@ -116,7 +116,7 @@ namespace BookKeeperBECommon.Repos
         /// Tries to store (persist) data about a given user.
         /// </summary>
         /// <param name="user">User to be persisted in the repo.</param>
-        public void Store(User user)
+        public void Store(Contact contact)
         {
             using (var context = new MysqlContext())
             {
@@ -133,13 +133,13 @@ namespace BookKeeperBECommon.Repos
         /// <summary>
         /// Adds a new user to the repo.
         /// </summary>
-        /// <param name="user">User to add.</param>
-        public void Add(User user)
+        /// <param name="contact">User to add.</param>
+        public void Add(Contact contact)
         {
             using (var context = new MysqlContext())
             {
 
-                context.Users.Add(user);
+                context.Contact.Add(user);
 
                 context.SaveChanges();
 
@@ -151,8 +151,8 @@ namespace BookKeeperBECommon.Repos
         /// <summary>
         /// Removes a given user from the repo.
         /// </summary>
-        /// <param name="user">User to remove.</param>
-        public void Remove(User user)
+        /// <param name="contact">User to remove.</param>
+        public void Remove(Contact contact)
         {
             using (var context = new MysqlContext())
             {
@@ -166,17 +166,17 @@ namespace BookKeeperBECommon.Repos
 
 
 
-        private IQueryable<User> BuildQuery(IQueryable<User> query, User user)
+        private IQueryable<Contact> BuildQuery(IQueryable<Contact> query, Contact contact)
         {
 
-            if (user.ID != 0)
+            if (contact.ID != 0)
             {
-                query = query.Where(u => u.ID == user.ID);
+                query = query.Where(u => u.ID == contact.ID);
             }
-            if (user.Username != null)
+            if (contact.Name != null)
             {
                 //query = query.Where(u => u.Username == user.Username);
-                string username = user.Username;
+                string username = contact.Name;
                 //if ( ! username.Contains('*') )
                 //{
                 //    query = query.Where(u => u.Username == username);
