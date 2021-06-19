@@ -1,0 +1,16 @@
+.login h1{
+    font-family: sans-serif;
+    color: ghostwhite;
+}
+.login button{
+    padding: 15px;
+    background-color: bisque;
+    outline: none;
+    font-family: sans-serif;
+    font-weight: bold;
+}
+.login{
+    background-color:lightskyblue;
+    padding: 40px;
+    border-radius: 10px;
+}
